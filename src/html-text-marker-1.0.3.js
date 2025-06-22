@@ -66,7 +66,7 @@ function htmCustomizeAll(element, text, format, options) {
  * @param {string} text - the text to match with
  * @param {Object} options - the custom options to follow
  */
-function htmHiglightAll(element, text, options) {
+function htmHighlightAll(element, text, options) {
     htmCustomizeAll(element, text, '<mark>{0}</mark>', options);
 }
 
