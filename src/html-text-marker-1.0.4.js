@@ -1,18 +1,20 @@
 /**
- * @typedef {Object} HtmOptions
+ * @typedef {Object} HTMOptions
  * @property {string[]} whitelist - the list of accepted element tag names in uppercase, CSS selectors, or * to represent all elements
  * @property {string[]} blacklist - the list of unaccepted element tag names in uppercase, CSS selectors, or * to represent all elements
  * @property {(element:HTMLElement) => boolean} selector - the custom predicate to determine whether an element is accepted
+ * @property {boolean} directChildrenOnly - whether to only process the direct children of the root element
  */
 
 /**
  * The default options provided by html-text-marker.
- * @type {HtmOptions}
+ * @type {HTMOptions}
  */
 const htmDefaultOptions = {
     whitelist: ['*'],
     blacklist: [],
-    selector: undefined
+    selector: undefined,
+    directChildrenOnly: false
 };
 
 /**
@@ -20,7 +22,7 @@ const htmDefaultOptions = {
  * @param {HTMLElement} element - the root element to find the provided text in
  * @param {string} text - the text to match with
  * @param {string} format - the custom format to update the text to, where {0} is replaced by the text
- * @param {Object} options - the custom options to follow
+ * @param {HTMOptions} options - the custom options to follow
  */
 function htmCustomizeAll(element, text, format, options) {
     for (var child = element.firstChild, childNext; child !== null; child = childNext) {
@@ -56,7 +58,9 @@ function htmCustomizeAll(element, text, format, options) {
             continue;
         }
 
-        htmCustomizeAll(child, text, format, options);
+        if (!options || !options.directChildrenOnly) {
+            htmCustomizeAll(child, text, format, options);
+        }
     }
 }
 
@@ -64,7 +68,7 @@ function htmCustomizeAll(element, text, format, options) {
  * Highlight all occurrences of the provided text.
  * @param {HTMLElement} element - the root element to find the provided text in
  * @param {string} text - the text to match with
- * @param {Object} options - the custom options to follow
+ * @param {HTMOptions} options - the custom options to follow
  */
 function htmHighlightAll(element, text, options) {
     htmCustomizeAll(element, text, '<mark>{0}</mark>', options);
@@ -74,7 +78,7 @@ function htmHighlightAll(element, text, options) {
  * Bold all occurrences of the provided text.
  * @param {HTMLElement} element - the root element to find the provided text in
  * @param {string} text - the text to match with
- * @param {Object} options - the custom options to follow
+ * @param {HTMOptions} options - the custom options to follow
  */
 function htmBoldAll(element, text, options) {
     htmCustomizeAll(element, text, '<b>{0}</b>', options);
@@ -84,7 +88,7 @@ function htmBoldAll(element, text, options) {
  * Italicize all occurrences of the provided text.
  * @param {HTMLElement} element - the root element to find the provided text in
  * @param {string} text - the text to match with
- * @param {Object} options - the custom options to follow
+ * @param {HTMOptions} options - the custom options to follow
  */
 function htmItalicizeAll(element, text, options) {
     htmCustomizeAll(element, text, '<i>{0}</i>', options);
@@ -94,7 +98,7 @@ function htmItalicizeAll(element, text, options) {
  * Underline all occurrences of the provided text.
  * @param {HTMLElement} element - the root element to find the provided text in
  * @param {string} text - the text to match with
- * @param {Object} options - the custom options to follow
+ * @param {HTMOptions} options - the custom options to follow
  */
 function htmUnderlineAll(element, text, options) {
     htmCustomizeAll(element, text, '<u>{0}</u>', options);
@@ -105,7 +109,7 @@ function htmUnderlineAll(element, text, options) {
  * @param {HTMLElement} element - the root element to find the provided text in
  * @param {string} text - the text to match with
  * @param {string} link - the link to use
- * @param {Object} options - the custom options to follow
+ * @param {HTMOptions} options - the custom options to follow
  */
 function htmLinkAll(element, text, link, options) {
     htmCustomizeAll(element, text, '<a href="' + link + '">{0}</a>', options);
@@ -115,7 +119,7 @@ function htmLinkAll(element, text, link, options) {
  * Delete all occurrences of the provided text.
  * @param {HTMLElement} element - the root element to find the provided text in
  * @param {string} text - the text to match with
- * @param {Object} options - the custom options to follow
+ * @param {HTMOptions} options - the custom options to follow
  */
 function htmDeleteAll(element, text, options) {
     htmCustomizeAll(element, text, '', options);
