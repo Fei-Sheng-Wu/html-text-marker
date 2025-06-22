@@ -16,7 +16,7 @@ const htmDefaultOptions = {
 };
 
 /**
- * Update all occurances of the provided text with a custom format.
+ * Update all occurrences of the provided text with a custom format.
  * @param {HTMLElement} element - the root element to find the provided text in
  * @param {string} text - the text to match with
  * @param {string} format - the custom format to update the text to, where {0} is replaced by the text
@@ -61,7 +61,7 @@ function htmCustomizeAll(element, text, format, options) {
 }
 
 /**
- * Highlight all occurances of the provided text.
+ * Highlight all occurrences of the provided text.
  * @param {HTMLElement} element - the root element to find the provided text in
  * @param {string} text - the text to match with
  * @param {Object} options - the custom options to follow
@@ -71,7 +71,7 @@ function htmHiglightAll(element, text, options) {
 }
 
 /**
- * Bold all occurances of the provided text.
+ * Bold all occurrences of the provided text.
  * @param {HTMLElement} element - the root element to find the provided text in
  * @param {string} text - the text to match with
  * @param {Object} options - the custom options to follow
@@ -81,7 +81,7 @@ function htmBoldAll(element, text, options) {
 }
 
 /**
- * Italicize all occurances of the provided text.
+ * Italicize all occurrences of the provided text.
  * @param {HTMLElement} element - the root element to find the provided text in
  * @param {string} text - the text to match with
  * @param {Object} options - the custom options to follow
@@ -91,7 +91,7 @@ function htmItalicizeAll(element, text, options) {
 }
 
 /**
- * Underline all occurances of the provided text.
+ * Underline all occurrences of the provided text.
  * @param {HTMLElement} element - the root element to find the provided text in
  * @param {string} text - the text to match with
  * @param {Object} options - the custom options to follow
@@ -101,7 +101,7 @@ function htmUnderlineAll(element, text, options) {
 }
 
 /**
- * Hyperlink all occurances of the provided text.
+ * Hyperlink all occurrences of the provided text.
  * @param {HTMLElement} element - the root element to find the provided text in
  * @param {string} text - the text to match with
  * @param {string} link - the link to use
@@ -112,7 +112,7 @@ function htmLinkAll(element, text, link, options) {
 }
 
 /**
- * Delete all occurances of the provided text.
+ * Delete all occurrences of the provided text.
  * @param {HTMLElement} element - the root element to find the provided text in
  * @param {string} text - the text to match with
  * @param {Object} options - the custom options to follow
