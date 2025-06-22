@@ -16,7 +16,7 @@ Highlight all occurrences of "text" under a specific HTML element `element`:
 htmHighlightAll(element, 'text')
 ```
 
-Use custom options to select accepted child HTML elements:
+Use custom options as an optional last parameter to select accepted child HTML elements:
 
 ```js
 htmHighlightAll(document.body, 'text', {
@@ -25,7 +25,7 @@ htmHighlightAll(document.body, 'text', {
 })
 ```
 
-Predefined formatters include:
+Predefined formatters for the basic uses include:
 
 ```js
 htmHighlightAll(element, 'text')
@@ -36,7 +36,7 @@ htmLinkAll(element, 'text', 'www.example.com')
 htmDeleteAll(element, 'text')
 ```
 
-Format text in a custom manner, where `{0}` in the provided format is replaced by the provided text:
+Format text in a custom manner, where every `{0}` in the provided format is replaced by the provided text:
 
 ```js
 htmCustomizeAll(element, 'text', '<b>{0}</b>(<i>auto replaced by <u>html-text-marker</u></i>)')
@@ -44,7 +44,7 @@ htmCustomizeAll(element, 'text', '<b>{0}</b>(<i>auto replaced by <u>html-text-ma
 
 ## Preview
 
-| Original | `htmHiglightAll(document.body, "HTML")` |
+| Original | `htmHiglightAll(document.body, 'HTML')` |
 | :---: | :---: |
 | ![Original Webpage](https://github.com/Fei-Sheng-Wu/html-text-marker/blob/master/screenshot-original.png) | ![Formatted Webpage](https://github.com/Fei-Sheng-Wu/html-text-marker/blob/master/screenshot-formatted.png) |
 
