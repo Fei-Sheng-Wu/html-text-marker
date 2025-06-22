@@ -1,7 +1,13 @@
 function thCustomizeAll(element, text, format, options) {
-    for (var child = element.firstChild; child !== null; child = child.nextSibling) {
-        if (child.nodeType === Node.TEXT_NODE && element.innerHTML) {
-            if (options && element.innerHTML.includes(text)) {
+    for (var child = element.firstChild, childNext; child !== null; child = childNext) {
+        childNext = child.nextSibling;
+
+        if (child.nodeType === Node.TEXT_NODE) {
+            if (!(child.nodeValue.includes(text))) {
+                continue;
+            }
+
+            if (options) {
                 if (options.whitelist && !(options.whitelist.includes('*') || options.whitelist.includes(element.nodeName)
                     || options.whitelist.some(function (selector) { return element.matches(selector); }))) {
                     continue;
@@ -15,7 +21,14 @@ function thCustomizeAll(element, text, format, options) {
                 }
             }
 
-            element.innerHTML = element.innerHTML.replaceAll(text, format.replaceAll('{0}', text));
+            var template = document.createElement('div');
+            template.innerHTML = child.nodeValue.replaceAll(text, format.replaceAll('{0}', text));
+            for (var templateChild = template.firstChild, templateChildNext; templateChild !== null; templateChild = templateChildNext) {
+                templateChildNext = templateChild.nextSibling;
+                element.insertBefore(templateChild, child);
+            }
+            element.removeChild(child);
+
             continue;
         }
 
