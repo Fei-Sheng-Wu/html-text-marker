@@ -44,7 +44,7 @@ htmCustomizeAll(element, 'text', '<b>{0}</b>(<i>auto replaced by <u>html-text-ma
 
 ## Preview
 
-| Original | `htmHiglightAll(document.body, 'HTML')` |
+| Original | `htmHighlightAll(document.body, 'HTML')` |
 | :---: | :---: |
 | ![Original Webpage](https://github.com/Fei-Sheng-Wu/html-text-marker/blob/master/screenshot-original.png) | ![Formatted Webpage](https://github.com/Fei-Sheng-Wu/html-text-marker/blob/master/screenshot-formatted.png) |
 
