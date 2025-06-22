@@ -41,3 +41,13 @@ Format text in a custom manner, where `{0}` in the provided format is replaced b
 ```js
 htmCustomizeAll(element, 'text', '<b>{0}</b>(<i>auto replaced by <u>html-text-marker</u></i>)')
 ```
+
+## Preview
+
+| Original | `htmHiglightAll(document.body, "HTML")` |
+| :---: | :---: |
+| ![Original Webpage](https://github.com/Fei-Sheng-Wu/html-text-marker/blob/master/screenshot-original.png) | ![Formatted Webpage](https://github.com/Fei-Sheng-Wu/html-text-marker/blob/master/screenshot-formatted.png) |
+
+## License
+
+This project is under the [MIT License](https://github.com/Fei-Sheng-Wu/html-text-marker/blob/master/LICENSE.txt).
