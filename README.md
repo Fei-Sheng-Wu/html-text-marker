@@ -21,7 +21,7 @@ Use custom options as an optional last parameter to select accepted child HTML e
 ```js
 htmHighlightAll(document.body, 'text', {
     //Disallow all <p> elements and elements with "example" class
-    blacklist: ['P', '.example']
+    blacklist: ['p', '.example']
 })
 ```
 
@@ -32,8 +32,10 @@ htmHighlightAll(element, 'text')
 htmBoldAll(element, 'text')
 htmItalicizeAll(element, 'text')
 htmUnderlineAll(element, 'text')
+htmStrikethroughAll(element, 'text')
 htmLinkAll(element, 'text', 'www.example.com')
-htmDeleteAll(element, 'text')
+htmHeadingAll(element, 'text', 1)
+htmRemoveAll(element, 'text')
 ```
 
 Format text in a custom manner, where every `{0}` in the provided format is replaced by the provided text:
