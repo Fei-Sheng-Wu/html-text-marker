@@ -1,9 +1,10 @@
 /**
  * @typedef {Object} HTMOptions
- * @property {string[]} whitelist - the list of accepted element tag names, CSS selectors, or * to represent all elements
- * @property {string[]} blacklist - the list of unaccepted element tag names, CSS selectors, or * to represent all elements
- * @property {(element:HTMLElement) => boolean} selector - the custom predicate to determine whether an element is accepted
- * @property {boolean} directChildrenOnly - whether to only process the direct children of the root element
+ * @property {undefined|string[]} whitelist - the list of accepted element tag names, CSS selectors, or * to represent all elements
+ * @property {undefined|string[]} blacklist - the list of unaccepted element tag names, CSS selectors, or * to represent all elements
+ * @property {undefined|(element:HTMLElement) => boolean} selector - the custom predicate to determine whether an element is accepted
+ * @property {undefined|number} maxDepth - the maximum depth to search for from the root element
+ * @property {boolean} verbose - whether to log information of matched elements for debugging purposes
  */
 
 /**
@@ -11,10 +12,11 @@
  * @type {HTMOptions}
  */
 const htmDefaultOptions = {
-    whitelist: ['*'],
+    whitelist: undefined,
     blacklist: ['base', 'head', 'link', 'meta', 'script', 'style', 'title'],
     selector: undefined,
-    directChildrenOnly: false
+    maxDepth: undefined,
+    verbose: false
 };
 
 /**
@@ -25,43 +27,54 @@ const htmDefaultOptions = {
  * @param {HTMOptions} options - the custom options to follow
  */
 function htmCustomizeAll(element, text, format, options) {
-    options = options || htmDefaultOptions;
+    options = options || {};
+    for (var defaultOption in htmDefaultOptions) {
+        options[defaultOption] = options[defaultOption] || htmDefaultOptions[defaultOption];
+    }
 
-    for (var child = element.firstChild, childNext; child !== null; child = childNext) {
-        childNext = child.nextSibling;
+    var htmInternal = function (currentElement, currentDepth) {
+        for (var child = currentElement.firstChild, childNext; child; child = childNext) {
+            childNext = child.nextSibling;
 
-        if (child.nodeType === Node.TEXT_NODE) {
-            if (!(child.nodeValue.includes(text))) {
+            if (child.nodeType === Node.TEXT_NODE) {
+                if (!(child.nodeValue.includes(text))) {
+                    continue;
+                }
+
+                if (options.whitelist && !(options.whitelist.includes('*') || options.whitelist.includes(currentElement.nodeName.toLowerCase())
+                    || options.whitelist.some(function (selector) { return currentElement.matches(selector); }))) {
+                    continue;
+                }
+                if (options.blacklist && (options.blacklist.includes('*') || options.blacklist.includes(currentElement.nodeName.toLowerCase())
+                    || options.blacklist.some(function (selector) { return currentElement.matches(selector); }))) {
+                    continue;
+                }
+                if (options.selector && !options.selector(currentElement)) {
+                    continue;
+                }
+
+                if (options.verbose) {
+                    console.log('html-text-marker is updating "' + child.nodeValue + '" of ' + currentElement.outerHTML);
+                }
+
+                var template = document.createElement('div');
+                template.innerHTML = child.nodeValue.replaceAll(text, format.replaceAll('{0}', text));
+                for (var templateChild = template.firstChild, templateChildNext; templateChild; templateChild = templateChildNext) {
+                    templateChildNext = templateChild.nextSibling;
+                    currentElement.insertBefore(templateChild, child);
+                }
+                currentElement.removeChild(child);
+
                 continue;
             }
 
-            if (options.whitelist && !(options.whitelist.includes('*') || options.whitelist.includes(element.nodeName.toLowerCase())
-                || options.whitelist.some(function (selector) { return element.matches(selector); }))) {
-                continue;
+            if (!options.maxDepth || currentDepth < options.maxDepth) {
+                htmInternal(child, currentDepth + 1);
             }
-            if (options.blacklist && (options.blacklist.includes('*') || options.blacklist.includes(element.nodeName.toLowerCase())
-                || options.blacklist.some(function (selector) { return element.matches(selector); }))) {
-                continue;
-            }
-            if (options.selector && !options.selector(element)) {
-                continue;
-            }
-
-            var template = document.createElement('div');
-            template.innerHTML = child.nodeValue.replaceAll(text, format.replaceAll('{0}', text));
-            for (var templateChild = template.firstChild, templateChildNext; templateChild !== null; templateChild = templateChildNext) {
-                templateChildNext = templateChild.nextSibling;
-                element.insertBefore(templateChild, child);
-            }
-            element.removeChild(child);
-
-            continue;
-        }
-
-        if (!options.directChildrenOnly) {
-            htmCustomizeAll(child, text, format, options);
         }
     }
+
+    htmInternal(element, 0);
 }
 
 /**
